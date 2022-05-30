@@ -31,7 +31,7 @@ export default {
     chartMemory.setOption(MemoryOption())
     let chartThread = echarts.init(document.getElementById('chart-thread'), 'dark', {height: 500})
     chartThread.setOption(ThreadOption())
-    axios.get('https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/asset/data/aqi-beijing.json').then(data => {
+    axios.get('https://fastly.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/asset/data/life-expectancy-table.json').then(data => {
       let chartSystem = echarts.init(document.getElementById('chart-system'), 'dark', {height: 500})
       chartSystem.setOption(SystemOption(data.data))
     })

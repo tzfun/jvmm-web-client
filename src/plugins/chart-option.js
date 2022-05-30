@@ -121,113 +121,79 @@ export function ThreadOption() {
     return option
 }
 
+//  https://echarts.apache.org/examples/zh/editor.html?c=data-transform-filter
 export function SystemOption(data) {
     let option = {
-        backgroundColor: backgroundColor,
+        backgroundColor,
+        dataset: [
+            {
+                id: 'dataset_raw',
+                source: data
+            },
+            {
+                id: 'dataset_since_1950_of_germany',
+                fromDatasetId: 'dataset_raw',
+                transform: {
+                    type: 'filter',
+                    config: {
+                        and: [
+                            { dimension: 'Year', gte: 1950 },
+                            { dimension: 'Country', '=': 'Germany' }
+                        ]
+                    }
+                }
+            },
+            {
+                id: 'dataset_since_1950_of_france',
+                fromDatasetId: 'dataset_raw',
+                transform: {
+                    type: 'filter',
+                    config: {
+                        and: [
+                            { dimension: 'Year', gte: 1950 },
+                            { dimension: 'Country', '=': 'France' }
+                        ]
+                    }
+                }
+            }
+        ],
         title: {
-            text: 'Beijing AQI',
-            left: '1%'
+            text: 'Income of Germany and France since 1950'
         },
         tooltip: {
             trigger: 'axis'
         },
-        grid: {
-            left: '5%',
-            right: '15%',
-            bottom: '10%'
-        },
         xAxis: {
-            data: data.map(function (item) {
-                return item[0];
-            })
+            type: 'category',
+            nameLocation: 'middle'
         },
-        yAxis: {},
-        toolbox: {
-            right: 10,
-            feature: {
-                dataZoom: {
-                    yAxisIndex: 'none'
-                },
-                restore: {},
-                saveAsImage: {}
-            }
+        yAxis: {
+            name: 'Income'
         },
-        dataZoom: [
+        series: [
             {
-                startValue: '2014-06-01'
+                type: 'line',
+                datasetId: 'dataset_since_1950_of_germany',
+                showSymbol: false,
+                encode: {
+                    x: 'Year',
+                    y: 'Income',
+                    itemName: 'Year',
+                    tooltip: ['Income']
+                }
             },
             {
-                type: 'inside'
-            }
-        ],
-        visualMap: {
-            top: 50,
-            right: 10,
-            pieces: [
-                {
-                    gt: 0,
-                    lte: 50,
-                    color: '#93CE07'
-                },
-                {
-                    gt: 50,
-                    lte: 100,
-                    color: '#FBDB0F'
-                },
-                {
-                    gt: 100,
-                    lte: 150,
-                    color: '#FC7D02'
-                },
-                {
-                    gt: 150,
-                    lte: 200,
-                    color: '#FD0100'
-                },
-                {
-                    gt: 200,
-                    lte: 300,
-                    color: '#AA069F'
-                },
-                {
-                    gt: 300,
-                    color: '#AC3B2A'
+                type: 'line',
+                datasetId: 'dataset_since_1950_of_france',
+                showSymbol: false,
+                encode: {
+                    x: 'Year',
+                    y: 'Income',
+                    itemName: 'Year',
+                    tooltip: ['Income']
                 }
-            ],
-            outOfRange: {
-                color: '#999'
             }
-        },
-        series: {
-            name: 'Beijing AQI',
-            type: 'line',
-            data: data.map(function (item) {
-                return item[1];
-            }),
-            markLine: {
-                silent: true,
-                lineStyle: {
-                    color: '#333'
-                },
-                data: [
-                    {
-                        yAxis: 50
-                    },
-                    {
-                        yAxis: 100
-                    },
-                    {
-                        yAxis: 150
-                    },
-                    {
-                        yAxis: 200
-                    },
-                    {
-                        yAxis: 300
-                    }
-                ]
-            }
-        }
-    }
+        ]
+    };
     return option
 }
